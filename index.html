@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rocket Launch Simulation</title>
+  <style>
+   
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #000;
+      overflow: hidden;
+      margin: 0;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+
+    #rocket {
+      position: absolute;
+      bottom: 20px;
+      width: 50px;
+      height: 100px;
+      background-color: rgb(144, 215, 13);
+      border-radius: 10px;
+      transition: transform 0.1s;
+    }
+
+  
+    #rocket:before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 25px solid transparent;
+      border-right: 25px solid transparent;
+      border-bottom: 30px solid rgb(18, 22, 243);
+    }
+
+
+    .fin {
+      position: absolute;
+      bottom: 10px;
+      width: 10px;
+      height: 20px;
+      background-color: rgb(0, 183, 255);
+    }
+
+    .fin.left {
+      left: -10px;
+      transform: rotate(-20deg);
+    }
+
+    .fin.right {
+      right: -10px;
+      transform: rotate(20deg);
+    }
+
+ 
+    #flame {
+      position: absolute;
+      bottom: -20px;
+      left: 15px;
+      width: 20px;
+      height: 50px;
+      background: radial-gradient(circle, #2f00ff 10%, #0077ff 70%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+
+    #countdown {
+      position: absolute;
+      top: 10px;
+      font-size: 2rem;
+    }
+
+
+    #launchButton {
+      position: absolute;
+      top: 60px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+
+  <div id="rocket">
+    <div class="fin left"></div>
+    <div class="fin right"></div>
+    <div id="flame"></div>
+  </div>
+
+
+  <div id="countdown">10</div>
+
+
+  <button id="launchButton" onclick="startCountdown()">Launch Rocket</button>
+
+  <script>
+    const countdownElement = document.getElementById('countdown');
+    const rocket = document.getElementById('rocket');
+    const flame = document.getElementById('flame');
+    let countdown = 10;
+    let interval;
+
+    function startCountdown() {
+      clearInterval(interval);
+      countdown = 10;
+      countdownElement.textContent = countdown;
+      rocket.style.bottom = '20px';
+      flame.style.opacity = 0;
+      interval = setInterval(() => {
+        countdown -= 1;
+        countdownElement.textContent = countdown;
+        if (countdown <= 0) {
+          clearInterval(interval);
+          launchRocket();
+        }
+      }, 1000);
+    }
+
+    function launchRocket() {
+      flame.style.opacity = 1;
+      let position = 20;
+      const liftOffInterval = setInterval(() => {
+        position += 5;
+        rocket.style.bottom = position + 'px';
+        if (position > window.innerHeight) {
+          clearInterval(liftOffInterval);
+          flame.style.opacity = 0;
+        }
+      }, 50);
+    }
+  </script>
+
+</body>
+</html>
